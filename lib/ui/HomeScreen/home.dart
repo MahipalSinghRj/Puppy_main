@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:friday_v/provider/bottom_provider.dart';
-import 'package:friday_v/ui/main/team.dart';
+import 'package:friday_v/ui/TeamScreen/team.dart';
 import 'package:friday_v/utils/colors.dart';
 import 'package:friday_v/utils/svg.dart';
-import 'package:friday_v/widgets/atoms.dart';
 import 'package:provider/provider.dart';
-import 'dash.dart';
-import 'job/job_main.dart';
+import '../BottomNavigationBar/bottom_item.dart';
+import 'dashboard_screen.dart';
+import '../JobsScreen/jobs_main.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/homePage';
@@ -28,13 +28,10 @@ class _MyHomePageState extends State<HomePage> {
   }
 
   final List<Widget> _widgetOptions = [
-    Dashboard(),
-    const JobMain(),
-    Teams(),
-    //geofence(),
-    const Center(
-      child: Text('Stat Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    ),
+    const Dashboard(),
+    const JobsMain(),
+    const Teams(),
+    const Center(child: Text('Stat Page', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold))),
   ];
 
   @override
@@ -103,30 +100,5 @@ class _MyHomePageState extends State<HomePage> {
             },
           ),
         ));
-  }
-}
-
-class BottomItem extends StatelessWidget {
-  final bool isSelected;
-  final String menu;
-  final String icon;
-
-  const BottomItem({Key? key, required this.isSelected, required this.menu, required this.icon}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-        duration: const Duration(milliseconds: 350),
-        color: Colors.white,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          SvgView(
-            color: isSelected ? primaryColor : menuDisabled,
-            icon: icon,
-            padding: 4,
-          ),
-          isSelected
-              ? Text(menu, style: const TextStyle(fontSize: 16.0, color: primaryColor, fontWeight: FontWeight.bold))
-              : Container()
-        ]));
   }
 }

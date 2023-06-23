@@ -29,41 +29,30 @@ class SvgIcon {
   static String close_circle = "assets/icons/close_circle.svg";
   static String search = "assets/icons/search.svg";
   static String filter = "assets/icons/filter.svg";
-
   static String share = "assets/icons/share.svg";
   static String settings = "assets/icons/settings.svg";
   static String tool = "assets/icons/tool.svg";
   static String bookmark = "assets/icons/bookmark.svg";
-
   static String edit = "assets/icons/edit_.svg";
   static String delete = "assets/icons/delete.svg";
   static String mail = "assets/icons/mail.svg";
   static String download = "assets/icons/download.svg";
-
   static String message = "assets/icons/message.svg";
   static String file = "assets/icons/file.svg";
   static String order_edit = "assets/icons/order_edit.svg";
-
   static String plus = "assets/icons/plus.svg";
-
   static String home = "assets/icons/home.svg";
   static String project = "assets/icons/project.svg";
   static String teams = "assets/icons/users.svg";
   static String chartline = "assets/icons/chartline.svg";
-
   static String overflow = "assets/icons/overflow.svg";
   static String notification = "assets/icons/notification.svg";
-
   static String star_outline = "assets/icons/star_outline.svg";
   static String star_filled = "assets/icons/star_filled.svg";
-
   static String redo = "assets/icons/redo.svg";
   static String clock = "assets/icons/clock.svg";
-
   static String ms = "assets/icons/ms.svg";
-
   static String send_solid = "assets/icons/send_solid.svg";
   static String mic = "assets/icons/mic.svg";
   static String power = "assets/icons/power.svg";
-
 }

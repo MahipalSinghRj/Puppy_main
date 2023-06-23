@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:friday_v/auth/sso.dart';
 import 'package:friday_v/model/task.dart';
 import 'package:friday_v/model/user.dart';
 import 'package:friday_v/service/config.dart';
-import 'package:friday_v/utils/constants.dart';
+import 'package:friday_v/utils/status_code_constants.dart';
 import 'package:friday_v/utils/shared_pref.dart';
 import 'package:http/http.dart' as http;
+import '../Debug/printme.dart';
 
 class TodoService {
   SharedPref shared = SharedPref();
@@ -32,17 +32,15 @@ class TodoService {
       switch (response.statusCode) {
         case OK:
           final list = json.decode(response.body)["value"];
-          result = list
-              .map<TaskListModel>((json) => TaskListModel.fromJson(json))
-              .toList();
+          result = list.map<TaskListModel>((json) => TaskListModel.fromJson(json)).toList();
           for (TaskListModel task in result) {
             if (task.displayName == "Tasks") {
               single = task;
               break;
             }
           }
-          print("TASKLIST: " + result.length.toString());
-          print("TASKLIST: " + result.toString());
+          printMe("TASKLIST: ${result.length}");
+          printMe("TASKLIST: $result");
           break;
         case UNAUTHORIZED:
           Auth().refreshTokenResponse();
@@ -52,7 +50,7 @@ class TodoService {
           return single;
       }
     } catch (e) {
-      log("getTaskList(): " + e.toString());
+      log("getTaskList(): $e");
       return single;
     }
     return single;
@@ -67,9 +65,7 @@ class TodoService {
       var token = await getToken();
       final response = await http.get(
         //Todo: GET
-        Uri.parse("https://graph.microsoft.com/v1.0/me/todo/lists/" +
-            taskID +
-            "/tasks?\$filter=status eq 'notStarted'"),
+        Uri.parse("https://graph.microsoft.com/v1.0/me/todo/lists/$taskID/tasks?\$filter=status eq 'notStarted'"),
 
         headers: {
           "Content-Type": "application/json",
@@ -80,15 +76,14 @@ class TodoService {
       switch (response.statusCode) {
         case OK:
           final list = json.decode(response.body)["value"];
-          result =
-              list.map<TaskModel>((json) => TaskModel.fromJson(json)).toList();
+          result = list.map<TaskModel>((json) => TaskModel.fromJson(json)).toList();
 
           for (TaskModel task in result) {
             TaskModel tt = task;
             tt.odataEtag = taskID;
             result_.add(tt);
           }
-          print(result_.length);
+          printMe(result_.length.toString());
           break;
         case UNAUTHORIZED:
           Auth().refreshTokenResponse();
@@ -98,7 +93,7 @@ class TodoService {
           return result_;
       }
     } catch (e) {
-      log("getTasks():" + e.toString());
+      log("getTasks():$e");
       return result;
     }
     return result_;
@@ -111,15 +106,14 @@ class TodoService {
 
   update(String key, String importance, String list_id, String id) async {
     Map<String, dynamic> body = {
-      '$key': importance,
+      key: importance,
     };
     try {
       var token = await getToken();
       // log(token);
       final response = await http.patch(
         //Todo: Patch
-        Uri.parse(
-            "https://graph.microsoft.com/v1.0/me/todo/lists/$list_id/tasks/$id"),
+        Uri.parse("https://graph.microsoft.com/v1.0/me/todo/lists/$list_id/tasks/$id"),
         body: json.encode(body),
         headers: {
           "Content-Type": "application/json",
@@ -127,11 +121,11 @@ class TodoService {
         },
       );
 
-      print(response.body);
+      printMe(response.body);
 
       switch (response.statusCode) {
         case OK:
-          print('updated');
+          printMe('updated');
           break;
         case UNAUTHORIZED:
           Auth().refreshTokenResponse();
@@ -141,10 +135,9 @@ class TodoService {
           return;
       }
     } catch (e) {
-      log("getTasks():" + e.toString());
+      log("getTasks():$e");
     }
   }
-
 
   Future<String> updateBody(String body, String listId, String id) async {
     Map<String, dynamic> main = {
@@ -152,9 +145,7 @@ class TodoService {
       'contentType': 'text',
     };
 
-    Map<String, dynamic> map = {
-      'body': main
-    };
+    Map<String, dynamic> map = {'body': main};
 
     String updated = '';
 
@@ -163,8 +154,7 @@ class TodoService {
       // log(token);
       final response = await http.patch(
         //Todo: Patch
-        Uri.parse(
-            "https://graph.microsoft.com/v1.0/me/todo/lists/$listId/tasks/$id"),
+        Uri.parse("https://graph.microsoft.com/v1.0/me/todo/lists/$listId/tasks/$id"),
         body: json.encode(map),
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +162,7 @@ class TodoService {
         },
       );
 
-      print(response.body);
+      printMe(response.body);
 
       switch (response.statusCode) {
         case OK:
@@ -186,54 +176,9 @@ class TodoService {
 
       return updated;
     } catch (e) {
-      log("getTasks():" + e.toString());
+      log("getTasks():$e");
       return updated;
     }
   }
-
-
-
-
 }
 
-/*
-  Future<List<TaskListModel>> getTaskList() async {
-    List<TaskListModel> result = [];
-    TaskListModel single = TaskListModel();
-    try {
-      var token = await getToken();
-      final response = await http.get( //Todo: GET
-        Config.user_profile,
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      switch(response.statusCode)
-      {
-        case OK:
-          final list = json.decode(response.body)["value"];
-          result = list.map<TaskListModel>((json) => TaskListModel.fromJson(json)).toList();
-          for(TaskListModel task in result){
-              if(task.displayName == "Tasks")
-                {
-                  single = task;
-                  break;
-                }
-          }
-          break;
-        case UNAUTHORIZED:
-          Auth().refreshTokenResponse();
-          getTaskList();
-          break;
-        default:
-          return [];
-      }
-    } catch (e) {
-      log(e.toString());
-      return [];
-    }
-    return result;
-  }
-* */

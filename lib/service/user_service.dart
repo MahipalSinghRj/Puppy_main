@@ -1,46 +1,42 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:friday_v/auth/sso.dart';
 import 'package:friday_v/model/user.dart';
 import 'package:friday_v/service/config.dart';
-import 'package:friday_v/utils/constants.dart';
+import 'package:friday_v/utils/status_code_constants.dart';
 import 'package:friday_v/utils/shared_pref.dart';
 import 'package:http/http.dart' as http;
+
+import '../Debug/printme.dart';
 
 class UserService {
   SharedPref shared = SharedPref();
 
   Future<UserModel> getPeople() async {
     UserModel result = UserModel();
-    // try {
-    var token = await getToken();
-    final response = await http.get( //Todo: GET
-      Config.user_profile,
-      headers: {
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
-      },
-    );
+    try {
+      var token = await getToken();
+      final response = await http
+          .get(Config.user_profile, headers: {"Content-Type": "application/json", 'Authorization': 'Bearer $token'});
 
-    print(response.body);
+      printMe("Status Code is : ${response.statusCode}");
+      printMe("Get people response is : ${response.body}");
 
-
-    switch(response.statusCode)
-    {
-      case OK:
-        final item = json.decode(response.body);
-        result = UserModel.fromJson(item);
-        result.odataContext = token;
-        break;
-      case UNAUTHORIZED:
-        Auth().refreshTokenResponse();
-        getPeople();
-        break;
+      switch (response.statusCode) {
+        case OK:
+          final item = json.decode(response.body);
+          result = UserModel.fromJson(item);
+          result.odataContext = token;
+          break;
+        case UNAUTHORIZED:
+          Auth().refreshTokenResponse();
+          getPeople();
+          break;
+      }
+    } catch (e, r) {
+      printError(e.toString());
+      printError(r.toString());
     }
-    // } catch (e) {
-    //   log(e.toString());
-    // }
     return result;
   }
 
@@ -58,16 +54,12 @@ class UserService {
     UserModel result = UserModel();
     try {
       var token = await getToken();
-      final response = await http.get( //Todo: GET
-        Uri.parse("https://graph.microsoft.com/v1.0/users/$userId"),
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer $token',
-        },
-      );
+      final response = await http.get(Uri.parse("https://graph.microsoft.com/v1.0/users/$userId"),
+          headers: {"Content-Type": "application/json", 'Authorization': 'Bearer $token'});
+      printMe("Status Code is : ${response.statusCode}");
+      printMe("Get people response is : ${response.body}");
 
-      switch(response.statusCode)
-      {
+      switch (response.statusCode) {
         case OK:
           final item = json.decode(response.body);
           result = UserModel.fromJson(item);
@@ -78,36 +70,10 @@ class UserService {
           getPeopleByID(userId);
           break;
       }
-    } catch (e) {
-      log(e.toString());
+    } catch (e, r) {
+      printError(e.toString());
+      printError(r.toString());
     }
     return result;
-
   }
 }
-/*
-  Future<UserModel> getPeople() async {
-    UserModel result = UserModel();
-    try {
-      var token = await getToken();
-      final response = await http.get(
-        Config.user_profile,
-            headers: {
-              "Content-Type": "image/jpeg",
-              'Authorization': 'Bearer $token',
-            },
-      );
-
-      if (response.statusCode == OK) {
-        final item = json.decode(response.body);
-        result = UserModel.fromJson(item);
-        result.odataContext = token;
-      } else {
-
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    return result;
-  }
-* */

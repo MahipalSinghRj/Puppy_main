@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:friday_v/ui/job_detail.dart';
-import 'package:friday_v/ui/new_job.dart';
-import 'package:friday_v/ui/splash.dart';
+import 'package:friday_v/ui/JobsScreen/JobDetailScreens/local_details.dart';
+import 'package:friday_v/ui/LoginScreen/login_screen.dart';
+import 'package:friday_v/ui/SplashScreen/splash_screen.dart';
+import 'package:friday_v/ui/JobsScreen/new_job.dart';
 import 'package:friday_v/ui/task_detail.dart';
 import 'package:friday_v/utils/transition.dart';
 
 class Routes {
   //Route name constants
-  static const String Root = '/';
-  static const String Login_ = 'login';
-  static const String Detail_ = 'detail';
-  static const String NewJob_ = 'newjob';
-  static const String JobDetail_ = 'jobdetail';
+  static const String initialRoute = '/';
+  static const String loginPage = 'login';
+  static const String detailPage = 'detail';
+  static const String newJobPage = 'newjob';
+  static const String jobDetailPage = 'jobdetail';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     Map args = {};
@@ -20,18 +21,15 @@ class Routes {
     }
 
     switch (settings.name) {
-      case Root:
-        return FadeRoute(page: Splash());
-      case Login_:
-        return FadeRoute(page: Login());
-      case Detail_:
-        return FadeRoute(
-            page: TaskDetail(
-          taskModel: args['arg'],
-        ));
-      case NewJob_:
-        return FadeRoute(page: NewMeeting());
-      case JobDetail_:
+      case initialRoute:
+        return FadeRoute(page: const Splash());
+      case loginPage:
+        return FadeRoute(page: const Login());
+      case detailPage:
+        return FadeRoute(page: TaskDetail(taskModel: args['arg']));
+      case newJobPage:
+        return FadeRoute(page: const NewJob());
+      case jobDetailPage:
         return FadeRoute(page: LocalDetail(sessionData: args['localDetail']));
       default:
         return _errorRoute();

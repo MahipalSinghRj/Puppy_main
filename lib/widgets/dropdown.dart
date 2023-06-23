@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class DropListModel {
@@ -6,6 +5,7 @@ class DropListModel {
 
   final List<OptionItem> listOptionItems;
 }
+
 //version: 4.0.0+1
 class OptionItem {
   final String id;
@@ -20,15 +20,13 @@ class SelectDropList extends StatefulWidget {
   final DropListModel dropListModel;
   final Function(OptionItem) onOptionSelected;
 
-  SelectDropList(this.itemSelected, this.dropListModel, this.onOptionSelected);
+  const SelectDropList(this.itemSelected, this.dropListModel, this.onOptionSelected, {super.key});
 
   @override
-  _SelectDropListState createState() =>
-      _SelectDropListState(itemSelected, dropListModel);
+  _SelectDropListState createState() => _SelectDropListState(itemSelected, dropListModel);
 }
 
-class _SelectDropListState extends State<SelectDropList>
-    with SingleTickerProviderStateMixin {
+class _SelectDropListState extends State<SelectDropList> with SingleTickerProviderStateMixin {
   OptionItem optionItemSelected;
   final DropListModel dropListModel;
 
@@ -42,8 +40,7 @@ class _SelectDropListState extends State<SelectDropList>
   @override
   void initState() {
     super.initState();
-    expandController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 350));
+    expandController = AnimationController(vsync: this, duration: const Duration(milliseconds: 350));
     animation = CurvedAnimation(
       parent: expandController,
       curve: Curves.fastOutSlowIn,
@@ -67,61 +64,59 @@ class _SelectDropListState extends State<SelectDropList>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          AnimatedContainer(
-            duration: Duration(milliseconds: 400),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: new BoxDecoration(
-              borderRadius: isShow ? BorderRadius.vertical(bottom: Radius.circular(0.0), top: Radius.circular(10.0)):BorderRadius.circular(10.0),
-              color: Colors.white,
-            ),
-            child: new Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        this.isShow = !this.isShow;
-                        _runExpandCheck();
-                        setState(() {
-                          // print("state set");
-                        });
-                      },
-                      child: Text(
-                        optionItemSelected.title, style: TextStyle(fontSize: 16.0),
-                      ),
-                    )),
-                Align(
-                  alignment: Alignment(1, 0),
-                  child: Icon(
-                    isShow ? Icons.arrow_drop_down : Icons.arrow_right,
-                    size: 24,
-                  ),
-                ),
-              ],
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 400),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: BoxDecoration(
+            borderRadius: isShow
+                ? const BorderRadius.vertical(bottom: Radius.circular(0.0), top: Radius.circular(10.0))
+                : BorderRadius.circular(10.0),
+            color: Colors.white,
           ),
-          SizeTransition(
-              axisAlignment: 1.0,
-              sizeFactor: animation,
-              child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.only(bottom: 10),
-                  decoration: new BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)),
-                    color: Colors.white,
-                  ),
-                  child: _buildDropListOptions(
-                      dropListModel.listOptionItems, context))),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                  child: GestureDetector(
+                onTap: () {
+                  this.isShow = !this.isShow;
+                  _runExpandCheck();
+                  setState(() {
+                    // print("state set");
+                  });
+                },
+                child: Text(
+                  optionItemSelected.title,
+                  style: TextStyle(fontSize: 16.0),
+                ),
+              )),
+              Align(
+                alignment: const Alignment(1, 0),
+                child: Icon(
+                  isShow ? Icons.arrow_drop_down : Icons.arrow_right,
+                  size: 24,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizeTransition(
+            axisAlignment: 1.0,
+            sizeFactor: animation,
+            child: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 10),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                  color: Colors.white,
+                ),
+                child: _buildDropListOptions(dropListModel.listOptionItems, context))),
 //          Divider(color: Colors.grey.shade300, height: 1,)
-        ],
-      ),
+      ],
     );
   }
 
@@ -145,10 +140,7 @@ class _SelectDropListState extends State<SelectDropList>
                   border: Border(top: BorderSide(color: Colors.grey, width: 1)),
                 ),
                 child: Text(item.title,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
+                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
                     maxLines: 3,
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.ellipsis),

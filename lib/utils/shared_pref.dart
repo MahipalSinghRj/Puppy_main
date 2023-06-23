@@ -25,12 +25,9 @@ class SharedPref {
 
   Future<String> readRefresh() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user = prefs.getString('user')!=null?User.fromJson(json.decode(prefs.getString('user')!)):
-    User.fromJson(json.decode(
-        jsonEncode({ "AccessToken":"",
-          "IDToken":"",
-          "RefreshToken":""
-        })));
+    User user = prefs.getString('user') != null
+        ? User.fromJson(json.decode(prefs.getString('user')!))
+        : User.fromJson(json.decode(jsonEncode({"AccessToken": "", "IDToken": "", "RefreshToken": ""})));
     return user.RefreshToken;
   }
 }

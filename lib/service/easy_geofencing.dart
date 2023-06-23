@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_geofence/geofence.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:friday_v/Navigation_drawer/drawer.dart';
-
 import '../Debug/printme.dart';
 
 class geofence extends StatefulWidget {
@@ -32,9 +30,6 @@ class _MyAppState extends State<geofence> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
     Geofence.initialize();
     Geofence.startListening(GeolocationEvent.entry, (entry) {
@@ -72,7 +67,6 @@ class _MyAppState extends State<geofence> {
                 });
               },
             ),
-
             ElevatedButton(
               child: const Text("Add neighbour region"),
               onPressed: () {
@@ -86,7 +80,6 @@ class _MyAppState extends State<geofence> {
                 });
               },
             ),
-
             ElevatedButton(
               child: const Text("Request Permissions"),
               onPressed: () {
@@ -100,25 +93,6 @@ class _MyAppState extends State<geofence> {
                 });
               },
             ),
-            // RaisedButton(
-            //     child: Text("get user location"),
-            //     onPressed: () {
-            //       Geofence.getCurrentLocation().then((coordinate) {
-            //         print(
-            //             "great got latitude: ${coordinate
-            //                 ?.latitude} and longitude: ${coordinate
-            //                 ?.longitude}");
-            //       });
-            //     }),
-            // RaisedButton(
-            //     child: Text("Listen to background updates"),
-            //     onPressed: () {
-            //       Geofence.startListeningForLocationChanges();
-            //       Geofence.backgroundLocationUpdated.stream.listen((event) {
-            //         scheduleNotification("You moved significantly",
-            //             "a significant location change just happened.");
-            //       });
-            //     }),
             ElevatedButton(
                 child: const Text("Stop listening to background updates"),
                 onPressed: () {

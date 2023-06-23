@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_geofence/Geolocation.dart';
-
-export 'Geolocation.dart';
+export '../model/geolocation.dart';
 
 typedef void GeofenceCallback(Geolocation foo);
 
@@ -15,23 +13,19 @@ class Coordinate {
 }
 
 class Geofence {
-  static const MethodChannel _channel = const MethodChannel('geofence');
+  static const MethodChannel _channel = MethodChannel('geofence');
 
   static GeofenceCallback _entryCallback = (location) {};
   static GeofenceCallback _exitCallback = (location) {};
 
-
   //ignore: close_sinks
-  static StreamController<Coordinate> _userLocationUpdated =
-      new StreamController<Coordinate>();
+  static StreamController<Coordinate> _userLocationUpdated = StreamController<Coordinate>();
   // ignore: close_sinks
-  static StreamController<Coordinate> backgroundLocationUpdated =
-      new StreamController<Coordinate>();
+  static StreamController<Coordinate> backgroundLocationUpdated = StreamController<Coordinate>();
   static Stream<Coordinate>? _broadcastLocationStream;
 
   /// Adds a geolocation for a certain geo-event
-  static Future<void> addGeolocation(
-      Geolocation geolocation, GeolocationEvent event) {
+  static Future<void> addGeolocation(Geolocation geolocation, GeolocationEvent event) {
     return _channel.invokeMethod("addRegion", {
       "lng": geolocation.longitude,
       "lat": geolocation.latitude,
@@ -42,8 +36,7 @@ class Geofence {
   }
 
   /// Stops listening to a geolocation for a certain geo-event
-  static Future<void> removeGeolocation(
-      Geolocation geolocation, GeolocationEvent event) {
+  static Future<void> removeGeolocation(Geolocation geolocation, GeolocationEvent event) {
     return _channel.invokeMethod("removeRegion", {
       "lng": geolocation.longitude,
       "lat": geolocation.latitude,
@@ -78,7 +71,7 @@ class Geofence {
 
   /// Startup; needed to setup all callbacks and prevent race-issues.
   static void initialize() {
-    var completer = new Completer<void>();
+    var completer = Completer<void>();
     _broadcastLocationStream = _userLocationUpdated.stream.asBroadcastStream();
     _channel.setMethodCallHandler((call) async {
       if (call.method == "entry") {
@@ -96,12 +89,10 @@ class Geofence {
             id: call.arguments["id"] as String);
         _exitCallback(location);
       } else if (call.method == "userLocationUpdated") {
-        Coordinate coordinate =
-            Coordinate(call.arguments["lat"], call.arguments["lng"]);
+        Coordinate coordinate = Coordinate(call.arguments["lat"], call.arguments["lng"]);
         _userLocationUpdated.sink.add(coordinate);
       } else if (call.method == "backgroundLocationUpdated") {
-        Coordinate coordinate =
-            Coordinate(call.arguments["lat"], call.arguments["lng"]);
+        Coordinate coordinate = Coordinate(call.arguments["lat"], call.arguments["lng"]);
         backgroundLocationUpdated.sink.add(coordinate);
       }
       completer.complete();

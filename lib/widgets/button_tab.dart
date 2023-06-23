@@ -5,7 +5,7 @@ const double _kTabHeight = 46.0;
 const double _kTextAndIconTabHeight = 72.0;
 
 class ButtonsTabBar extends StatefulWidget implements PreferredSizeWidget {
-  ButtonsTabBar({
+  const ButtonsTabBar({
     Key? key,
     required this.tabs,
     this.controller,
@@ -108,8 +108,7 @@ class ButtonsTabBar extends StatefulWidget implements PreferredSizeWidget {
       if (item is Tab) {
         final Tab tab = item;
         if (tab.text != null && tab.icon != null) {
-          return Size.fromHeight(
-              height != _kTabHeight ? height : _kTextAndIconTabHeight);
+          return Size.fromHeight(height != _kTabHeight ? height : _kTextAndIconTabHeight);
         }
       }
     }
@@ -120,8 +119,7 @@ class ButtonsTabBar extends StatefulWidget implements PreferredSizeWidget {
   _ButtonsTabBarState createState() => _ButtonsTabBarState();
 }
 
-class _ButtonsTabBarState extends State<ButtonsTabBar>
-    with TickerProviderStateMixin {
+class _ButtonsTabBarState extends State<ButtonsTabBar> with TickerProviderStateMixin {
   TabController? _controller;
 
   final ScrollController _scrollController = ScrollController();
@@ -165,8 +163,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
 
     _scrollPhysics = widget.physics ?? const BouncingScrollPhysics();
 
-    _unselectedLabelStyle =
-        widget.unselectedLabelStyle ?? const TextStyle(color: Colors.black);
+    _unselectedLabelStyle = widget.unselectedLabelStyle ?? const TextStyle(color: Colors.black);
     _labelStyle = widget.labelStyle ?? const TextStyle(color: Colors.white);
 
     _foregroundColor = _labelStyle!.color ?? Colors.white;
@@ -179,30 +176,21 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
     _contentPadding = widget.contentPadding ?? const EdgeInsets.all(4);
     _buttonMargin = widget.buttonMargin ?? const EdgeInsets.all(4);
 
-    _animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: widget.duration));
-    _colorTweenBackgroundActivate = ColorTween(
-            begin: widget.unselectedBackgroundColor,
-            end: widget.backgroundColor)
-        .animate(_animationController);
-    _colorTweenBackgroundDeactivate = ColorTween(
-            begin: widget.backgroundColor,
-            end: widget.unselectedBackgroundColor)
-        .animate(_animationController);
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: widget.duration));
+    _colorTweenBackgroundActivate =
+        ColorTween(begin: widget.unselectedBackgroundColor, end: widget.backgroundColor).animate(_animationController);
+    _colorTweenBackgroundDeactivate =
+        ColorTween(begin: widget.backgroundColor, end: widget.unselectedBackgroundColor).animate(_animationController);
     _colorTweenForegroundActivate =
-        ColorTween(begin: _unselectedForegroundColor, end: _foregroundColor)
-            .animate(_animationController);
+        ColorTween(begin: _unselectedForegroundColor, end: _foregroundColor).animate(_animationController);
     _colorTweenForegroundDeactivate =
-        ColorTween(begin: _foregroundColor, end: _unselectedForegroundColor)
-            .animate(_animationController);
+        ColorTween(begin: _foregroundColor, end: _unselectedForegroundColor).animate(_animationController);
 
     if (_borderAnimation) {
       _colorTweenBorderActivate =
-          ColorTween(begin: _unselectedBorderColor, end: _borderColor)
-              .animate(_animationController);
+          ColorTween(begin: _unselectedBorderColor, end: _borderColor).animate(_animationController);
       _colorTweenBorderDeactivate =
-          ColorTween(begin: _borderColor, end: _unselectedBorderColor)
-              .animate(_animationController);
+          ColorTween(begin: _borderColor, end: _unselectedBorderColor).animate(_animationController);
     }
 
     // so the buttons start in their "final" state (color)
@@ -210,8 +198,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
   }
 
   void _updateTabController() {
-    final TabController? newController =
-        widget.controller ?? DefaultTabController.of(context);
+    final TabController? newController = widget.controller ?? DefaultTabController.of(context);
     assert(() {
       if (newController == null) {
         throw FlutterError('No TabController for ${widget.runtimeType}.\n'
@@ -261,8 +248,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
       _labelStyle = widget.labelStyle ?? const TextStyle(color: Colors.white);
     }
     if (widget.unselectedLabelStyle != _unselectedLabelStyle) {
-      _unselectedLabelStyle =
-          widget.unselectedLabelStyle ?? const TextStyle(color: Colors.black);
+      _unselectedLabelStyle = widget.unselectedLabelStyle ?? const TextStyle(color: Colors.black);
     }
 
     if (widget.tabs.length > oldWidget.tabs.length) {
@@ -293,11 +279,9 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
 
   Widget _buildButton(int index, Tab tab, int length) {
     final TextStyle? textStyle = (index == _currentIndex
-        ? TextStyle.lerp(
-            _unselectedLabelStyle, _labelStyle, _animationController.value)
+        ? TextStyle.lerp(_unselectedLabelStyle, _labelStyle, _animationController.value)
         : (index == _prevIndex
-            ? TextStyle.lerp(
-                _labelStyle, _unselectedLabelStyle, _animationController.value)
+            ? TextStyle.lerp(_labelStyle, _unselectedLabelStyle, _animationController.value)
             : _unselectedLabelStyle));
     return Expanded(
       child: Container(
@@ -307,12 +291,9 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
         margin: _buttonMargin,
         child: TextButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (states) => index == _currentIndex
-                    ? _colorTweenBackgroundActivate.value!
-                    : (index == _prevIndex
-                        ? _colorTweenBackgroundDeactivate.value!
-                        : widget.unselectedBackgroundColor)),
+            backgroundColor: MaterialStateProperty.resolveWith<Color>((states) => index == _currentIndex
+                ? _colorTweenBackgroundActivate.value!
+                : (index == _prevIndex ? _colorTweenBackgroundDeactivate.value! : widget.unselectedBackgroundColor)),
             shape: MaterialStateProperty.resolveWith<OutlinedBorder>((_) {
               return RoundedRectangleBorder(
                 side: widget.borderWidth == null
@@ -321,17 +302,14 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
                         color: _borderAnimation
                             ? (index == _currentIndex
                                 ? _colorTweenBorderActivate.value!
-                                : (index == _prevIndex
-                                    ? _colorTweenBorderDeactivate.value!
-                                    : _unselectedBorderColor!))
+                                : (index == _prevIndex ? _colorTweenBorderDeactivate.value! : _unselectedBorderColor!))
                             : _borderColor!,
                         width: widget.borderWidth!,
                         style: BorderStyle.solid),
                 borderRadius: BorderRadius.circular(widget.radius),
               );
             }),
-            textStyle: MaterialStateProperty.resolveWith<TextStyle>(
-                (states) => TextStyle(color: Colors.red)),
+            textStyle: MaterialStateProperty.resolveWith<TextStyle>((states) => TextStyle(color: Colors.red)),
           ),
 
           // highlightColor: Colors.transparent,
@@ -361,8 +339,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
   Widget build(BuildContext context) {
     assert(() {
       if (_controller!.length != widget.tabs.length) {
-        throw FlutterError(
-            "Controller's length property (${_controller!.length}) does not match the "
+        throw FlutterError("Controller's length property (${_controller!.length}) does not match the "
             "number of tabs (${widget.tabs.length}) present in TabBar's tabs property.");
       }
       return true;
@@ -379,8 +356,7 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
         height: widget.height,
         child: Row(
           children: [
-            for (int i = 0; i < widget.tabs.length; i++)
-              _buildButton(i, widget.tabs[i] as Tab, widget.tabs.length)
+            for (int i = 0; i < widget.tabs.length; i++) _buildButton(i, widget.tabs[i] as Tab, widget.tabs.length)
           ],
         ),
       ),
@@ -389,10 +365,8 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
 
   // runs during the switching tabs animation
   _handleTabAnimation() {
-    _aniIndex = ((_controller!.animation!.value > _prevAniValue)
-            ? _controller!.animation!.value
-            : _prevAniValue)
-        .round();
+    _aniIndex =
+        ((_controller!.animation!.value > _prevAniValue) ? _controller!.animation!.value : _prevAniValue).round();
     if (!_controller!.indexIsChanging && _aniIndex != _currentIndex) {
       _setCurrentIndex(_aniIndex);
     }
@@ -426,13 +400,11 @@ class _ButtonsTabBarState extends State<ButtonsTabBar>
 
   _scrollTo(int index) {
     // get the screen width. This is used to check if we have an element off screen
-    final RenderBox tabsContainer =
-        _tabsContainerKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox tabsContainer = _tabsContainerKey.currentContext!.findRenderObject() as RenderBox;
     double screenWidth = tabsContainer.size.width;
 
     // get the button we want to scroll to
-    RenderBox renderBox =
-        _tabKeys[index].currentContext?.findRenderObject() as RenderBox;
+    RenderBox renderBox = _tabKeys[index].currentContext?.findRenderObject() as RenderBox;
     // get its size
     double size = renderBox.size.width;
     // and position

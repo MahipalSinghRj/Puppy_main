@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:friday_v/model/task.dart';
@@ -6,27 +5,40 @@ import 'package:friday_v/provider/ui/todo.dart';
 import 'package:friday_v/utils/colors.dart';
 import 'package:friday_v/utils/svg.dart';
 import 'package:friday_v/utils/utils.dart';
-import 'package:friday_v/widgets/atoms.dart';
+import 'package:friday_v/widgets/sizebox_spacer.dart';
 import 'package:provider/provider.dart';
-
-import '../../../routes.dart';
+import '../../routes.dart';
+import '../../widgets/svg_view.dart';
 
 class Todo extends StatefulWidget {
+  const Todo({super.key});
+
   @override
-  _TodoState createState() => _TodoState();
+  TodoState createState() => TodoState();
 }
 
-class _TodoState extends State<Todo> {
+class TodoState extends State<Todo> {
   late TodoProvider jobs;
 
   Future<dynamic> _refresh() {
-    return jobs.getTaskList().then((_user) {
-      setState(() => jobs.tasks = _user);
+    return jobs.getTaskList().then((user) {
+      setState(() => jobs.tasks = user);
     });
   }
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+    jobs = Provider.of<TodoProvider>(context, listen: false);
+    jobs.getTaskList();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +54,15 @@ class _TodoState extends State<Todo> {
                     ? Center(
                         child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("No Jobs Available"),
-                        ],
+                        children: const [Text("No Jobs Available")],
                       ))
                     : ListView.builder(
                         padding: const EdgeInsets.only(bottom: 8),
                         itemCount: jobs.tasks.length,
                         itemBuilder: (BuildContext context, int index) {
                           return GestureDetector(
-                              onTap: () => Navigator.pushNamed(
-                                          context, Routes.Detail_,
-                                          arguments: {'arg': jobs.tasks[index]})
+                              onTap: () =>
+                                  Navigator.pushNamed(context, Routes.detailPage, arguments: {'arg': jobs.tasks[index]})
                                       .then((value) {
                                     setState(() {
                                       jobs.getTaskList();
@@ -88,9 +97,7 @@ class _TodoState extends State<Todo> {
       padding: const EdgeInsets.all(16.0),
       margin: const EdgeInsets.only(top: 8.0),
       decoration: BoxDecoration(
-          color: white,
-          border: Border.all(color: borderColor, width: 2.0),
-          borderRadius: BorderRadius.circular(10.0)),
+          color: white, border: Border.all(color: borderColor, width: 2.0), borderRadius: BorderRadius.circular(10.0)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,31 +106,22 @@ class _TodoState extends State<Todo> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4.0),
-                    color: status(task.status) == 'Completed'
-                        ? green.withOpacity(0.1)
-                        : primaryDark.withOpacity(0.1)),
+                    color: status(task.status) == 'Completed' ? green.withOpacity(0.1) : primaryDark.withOpacity(0.1)),
                 child: Text(
                   status(task.status),
                   style: body2.copyWith(
-                      color: status(task.status) == 'Completed'
-                          ? green
-                          : primaryDark,
-                      fontWeight: FontWeight.w500),
+                      color: status(task.status) == 'Completed' ? green : primaryDark, fontWeight: FontWeight.w500),
                 ),
               ),
               Text(Utils().String_toDTA(task.createdDateTime),
-                  style: body2.copyWith(
-                      color: menuDisabled, fontWeight: FontWeight.w500))
+                  style: body2.copyWith(color: menuDisabled, fontWeight: FontWeight.w500))
             ],
           ),
           spacer(8),
-          Text(task.title.trim(),
-              style: title.copyWith(
-                  color: secondaryDark, fontWeight: FontWeight.w800)),
+          Text(task.title.trim(), style: title.copyWith(color: secondaryDark, fontWeight: FontWeight.w800)),
           spacer(8),
           Visibility(
             visible: task.body!.content.toString().trim() == '' ? false : true,
@@ -134,8 +132,7 @@ class _TodoState extends State<Todo> {
                   task.body!.content.toString().trim(),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: body1.copyWith(
-                      color: menuDisabled, fontWeight: FontWeight.w500),
+                  style: body1.copyWith(color: menuDisabled, fontWeight: FontWeight.w500),
                 ),
                 spacer(8),
               ],
@@ -154,20 +151,14 @@ class _TodoState extends State<Todo> {
                       size: 16,
                     ),
                     spacer(8.0),
-                    Text(
-                        task.recurrence!.pattern!.type
-                            .toString()
-                            .capitalizeFirstOfEach,
-                        style: body2.copyWith(
-                            color: menuDisabled, fontWeight: FontWeight.w500)),
+                    Text(task.recurrence!.pattern!.type.toString().capitalizeFirstOfEach,
+                        style: body2.copyWith(color: menuDisabled, fontWeight: FontWeight.w500)),
                   ],
                 ),
               ),
               const Spacer(),
               SvgPicture.asset(
-                task.importance == 'high'
-                    ? SvgIcon.star_filled
-                    : SvgIcon.star_outline,
+                task.importance == 'high' ? SvgIcon.star_filled : SvgIcon.star_outline,
                 height: 24,
                 width: 24,
                 matchTextDirection: true,
@@ -178,39 +169,4 @@ class _TodoState extends State<Todo> {
       ),
     );
   }
-
-  @override
-  void initState() {
-    super.initState();
-    jobs = Provider.of<TodoProvider>(context, listen: false);
-    jobs.getTaskList();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }
-
-// Container buildContainer(TodoProvider job_data) {
-//   return Container(
-//     child: job_data.loading
-//         ? CircularProgressIndicator()
-//         : ListView.builder(
-//             itemCount: job_data.tasks.length,
-//             itemBuilder: (BuildContext context, int index) {
-//               return Container(
-//                 color: Colors.red,
-//                 child: Column(
-//                   children: [
-//                     Text(job_data.tasks[index].title),
-//                     Text(job_data.tasks[index].body!.content ?? ""),
-//                     job_data.tasks[index].isReminderOn
-//                         ? Icon(Icons.add)
-//                         : Icon(Icons.minimize_sharp)
-//                   ],
-//                 ),
-//               );
-//             }),
-//   );
-// }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:friday_v/Debug/printme.dart';
 import 'package:friday_v/provider/orientation_provider.dart';
 
 class SizeConfig {
@@ -8,7 +8,6 @@ class SizeConfig {
 
   static double? screenWidth_;
   static double? screenHeight_;
-
 
   static double _blockSizeHorizontal = 0;
   static double _blockSizeVertical = 0;
@@ -58,7 +57,7 @@ class SizeConfig {
 
       orientationProvider.toggle(isPortrait, isTab);
     }
-    //
+
     _blockSizeHorizontal = _screenWidth / 100;
     _blockSizeVertical = _screenHeight / 100;
 
@@ -66,11 +65,10 @@ class SizeConfig {
     imageSizeMultiplier = _blockSizeHorizontal;
     heightMultiplier = _blockSizeVertical;
 
-    print("TextMultiplier..." + textMultiplier.toString());
-    print("ImageSizeMultiplier..." + imageSizeMultiplier.toString());
-    print("HeightMultiplier..." + heightMultiplier.toString());
-
-    print("SceenHeight..." + _screenHeight.toString());
-    print("SceenWidth..." + _screenWidth.toString());
+    printAchievement("TextMultiplier...$textMultiplier");
+    printAchievement("ImageSizeMultiplier...$imageSizeMultiplier");
+    printAchievement("HeightMultiplier...$heightMultiplier");
+    printAchievement("SceenHeight...$_screenHeight");
+    printAchievement("SceenWidth...$_screenWidth");
   }
 }
