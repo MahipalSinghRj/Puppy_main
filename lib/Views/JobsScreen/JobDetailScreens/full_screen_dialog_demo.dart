@@ -4,6 +4,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/model/org.dart';
 import 'package:friday_v/service/config.dart';
 import 'package:friday_v/utils/colors.dart';
@@ -214,7 +215,7 @@ class FullScreenDialogDemoState extends State<FullScreenDialogDemo> {
     progressDialog.show();
 
     //Make request
-    Response response = await post(Uri.parse(URLHelper.endSession), body: body);
+    Response response = await post(Uri.parse(ApiConstants.endSession), body: body);
     body.remove('signature');
     printMe(body.toString());
     String raw = response.body;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/service/config.dart';
 import 'package:friday_v/utils/colors.dart';
 import 'package:http/http.dart';
@@ -113,7 +114,7 @@ class ToggleButtonState extends State<ToggleButton> {
       progressDialog.show();
 
       //Make request
-      Response response = await post(Uri.parse(URLHelper.break_toggle), body: body);
+      Response response = await post(Uri.parse(ApiConstants.breakToggle), body: body);
 
       String raw = response.body;
       if (raw == "failed") {

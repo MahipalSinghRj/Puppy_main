@@ -4,11 +4,11 @@ import 'package:friday_v/pdf/pdf.dart';
 import 'package:friday_v/provider/ui/rest.dart';
 import 'package:friday_v/service/customer_onsite.dart';
 import 'package:friday_v/service/easy_geofencing.dart';
-import 'package:friday_v/ui/HomeScreen/home.dart';
 import 'package:friday_v/utils/colors.dart';
 import 'package:friday_v/utils/shared_pref.dart';
 import 'package:friday_v/widgets/sizebox_spacer.dart';
 import 'package:provider/provider.dart';
+import '../Views/HomeScreen/home.dart';
 import '../routes.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -77,7 +77,7 @@ class NavDrawer extends StatelessWidget {
             leading: IconButton(icon: const Icon(Icons.account_circle), onPressed: () {}),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => customer_onsite()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CustomerOnSite()));
             },
           ),
           ListTile(

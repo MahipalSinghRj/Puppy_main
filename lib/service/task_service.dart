@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/auth/sso.dart';
 import 'package:friday_v/model/task.dart';
 import 'package:friday_v/model/user.dart';
@@ -20,8 +21,7 @@ class TodoService {
     try {
       var token = await getToken();
       final response = await http.get(
-        //Todo: GET
-        Config.taskList,
+        Uri.parse(ApiConstants.taskList),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -64,9 +64,7 @@ class TodoService {
     try {
       var token = await getToken();
       final response = await http.get(
-        //Todo: GET
         Uri.parse("https://graph.microsoft.com/v1.0/me/todo/lists/$taskID/tasks?\$filter=status eq 'notStarted'"),
-
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -181,4 +179,3 @@ class TodoService {
     }
   }
 }
-

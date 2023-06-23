@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:friday_v/ui/JobsScreen/JobDetailScreens/local_details.dart';
-import 'package:friday_v/ui/LoginScreen/login_screen.dart';
-import 'package:friday_v/ui/SplashScreen/splash_screen.dart';
-import 'package:friday_v/ui/JobsScreen/new_job.dart';
-import 'package:friday_v/ui/task_detail.dart';
 import 'package:friday_v/utils/transition.dart';
+import 'Views/JobsScreen/JobDetailScreens/local_details.dart';
+import 'Views/JobsScreen/new_job.dart';
+import 'Views/LoginScreen/login_screen.dart';
+import 'Views/SplashScreen/splash_screen.dart';
+import 'Views/task_detail.dart';
 
 class Routes {
   //Route name constants

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:friday_v/ui/JobsScreen/jobs.dart';
-import 'package:friday_v/ui/JobsScreen/todo.dart';
+import 'package:friday_v/Views/JobsScreen/todo.dart';
 import 'package:friday_v/utils/colors.dart';
-import 'package:friday_v/widgets/sizebox_spacer.dart';
 import 'package:friday_v/widgets/button_tab.dart';
-
 import '../../widgets/top_bar.dart';
+import 'jobs.dart';
 
 class JobsMain extends StatefulWidget {
   const JobsMain({Key? key}) : super(key: key);

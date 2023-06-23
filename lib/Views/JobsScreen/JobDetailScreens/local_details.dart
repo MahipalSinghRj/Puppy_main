@@ -1,13 +1,11 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:friday_v/Views/JobsScreen/JobDetailScreens/toggle_button.dart';
 import 'package:friday_v/model/org.dart';
-import 'package:friday_v/ui/JobsScreen/JobDetailScreens/toggle_button.dart';
 import 'package:friday_v/utils/colors.dart';
 import 'package:friday_v/utils/svg.dart';
 import 'package:friday_v/utils/utils.dart';
-import 'package:friday_v/widgets/sizebox_spacer.dart';
-
 import '../../../Debug/printme.dart';
 import '../../../widgets/dot_indicator.dart';
 import '../../../widgets/top_bar.dart';

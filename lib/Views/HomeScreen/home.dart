@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:friday_v/provider/bottom_provider.dart';
-import 'package:friday_v/ui/TeamScreen/team.dart';
-import 'package:friday_v/utils/colors.dart';
+ import 'package:friday_v/utils/colors.dart';
 import 'package:friday_v/utils/svg.dart';
 import 'package:provider/provider.dart';
 import '../BottomNavigationBar/bottom_item.dart';
+import '../TeamScreen/team.dart';
 import 'dashboard_screen.dart';
 import '../JobsScreen/jobs_main.dart';
 
@@ -40,8 +40,7 @@ class _MyHomePageState extends State<HomePage> {
         body: Consumer<BottomProvider>(builder: (context, index, child) {
           return _widgetOptions.elementAt(index.index);
         }),
-        // drawer: navigationDrawer(),
-        bottomNavigationBar: Container(
+         bottomNavigationBar: Container(
           height: 64.0,
           width: double.infinity,
           decoration: const BoxDecoration(

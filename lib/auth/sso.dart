@@ -3,11 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:friday_v/model/user.dart';
-import 'package:friday_v/ui/HomeScreen/home.dart';
 import 'package:friday_v/utils/status_code_constants.dart';
 import 'package:friday_v/utils/shared_pref.dart';
 import 'package:http/http.dart' as http;
 import '../Debug/printme.dart';
+import '../Views/HomeScreen/home.dart';
 
 class Auth {
   final FlutterAppAuth _appAuth = const FlutterAppAuth();

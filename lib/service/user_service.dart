@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/auth/sso.dart';
 import 'package:friday_v/model/user.dart';
 import 'package:friday_v/service/config.dart';
@@ -16,8 +17,8 @@ class UserService {
     UserModel result = UserModel();
     try {
       var token = await getToken();
-      final response = await http
-          .get(Config.user_profile, headers: {"Content-Type": "application/json", 'Authorization': 'Bearer $token'});
+      final response = await http.get(Uri.parse(ApiConstants.userProfile),
+          headers: {"Content-Type": "application/json", 'Authorization': 'Bearer $token'});
 
       printMe("Status Code is : ${response.statusCode}");
       printMe("Get people response is : ${response.body}");
@@ -54,7 +55,7 @@ class UserService {
     UserModel result = UserModel();
     try {
       var token = await getToken();
-      final response = await http.get(Uri.parse("https://graph.microsoft.com/v1.0/users/$userId"),
+      final response = await http.get(Uri.parse("${ApiConstants.getPeopleById}users/$userId"),
           headers: {"Content-Type": "application/json", 'Authorization': 'Bearer $token'});
       printMe("Status Code is : ${response.statusCode}");
       printMe("Get people response is : ${response.body}");

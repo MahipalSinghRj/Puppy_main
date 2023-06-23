@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/Navigation_drawer/drawer.dart';
 import 'package:friday_v/model/location.dart';
 import 'package:friday_v/model/org.dart';
@@ -13,25 +14,22 @@ import 'package:friday_v/utils/size_config.dart';
 import 'package:friday_v/widgets/sizebox_spacer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
-import 'package:location/location.dart';
 import 'package:ndialog/ndialog.dart';
-import 'dart:io' show Platform;
 import '../Debug/printme.dart';
-import '../widgets/map_bottom_sheet.dart';
 
-class customer_onsite extends StatefulWidget {
+class CustomerOnSite extends StatefulWidget {
   static const String routeName = '/customer_onsite';
 
-  const customer_onsite({super.key});
+  const CustomerOnSite({super.key});
 
   @override
-  meetingsite createState() => meetingsite();
+  MeetingSite createState() => MeetingSite();
 }
 
-class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
-  //Onload initialization
+class MeetingSite extends State<CustomerOnSite> with TickerProviderStateMixin {
+  //On load initialization
   late GoogleMapController _controller;
-  static final LatLng InitialLocation = LatLng(-36.502181, 145.483975);
+  static const LatLng initialLocation = LatLng(-36.502181, 145.483975);
 
   final company = TextEditingController();
   final firstname = TextEditingController();
@@ -42,11 +40,10 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
   final latitute = TextEditingController();
   final longitute = TextEditingController();
 
-  final List<Marker> _markers = <Marker>[];
   final Set<Marker> _marker = {};
 
   //Initial Camera position
-  static final CameraPosition _kGooglePlex = CameraPosition(target: InitialLocation, zoom: 5.4746);
+  static const CameraPosition _kGooglePlex = CameraPosition(target: initialLocation, zoom: 5.4746);
 
   String Address = "search";
 
@@ -65,67 +62,11 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
     });
   }
 
-  Set<Marker> _mainMarker() {
-    return <Marker>{
-      Marker(
-          markerId: const MarkerId("Empty"),
-          position: InitialLocation,
-          infoWindow: const InfoWindow(title: "Please select the organization"),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-          consumeTapEvents: true,
-          onTap: () {})
-    };
-  }
-
   late BitmapDescriptor pinLocationIcon;
 
   void setCustomMapPin() async {
     pinLocationIcon =
         await BitmapDescriptor.fromAssetImage(const ImageConfiguration(devicePixelRatio: 1.5), 'assets/marker.png');
-  }
-
-  Set<Marker> _createMarker(List<Site> marker) {
-    return marker
-        .map((Site data) => Marker(
-            markerId: MarkerId(data.siteId!),
-            position: LatLng(double.parse(data.siteLat!), double.parse(data.siteLng!)),
-            infoWindow: InfoWindow(title: data.siteAddress),
-            icon: pinLocationIcon,
-            consumeTapEvents: true,
-            onTap: () {
-              FocusScope.of(context).unfocus();
-              showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  isDismissible: true,
-                  context: context,
-                  builder: (context) => MapBottomSheet(
-                        marker: data,
-                        organization: dropdownValue,
-                        onPressed: (id, address, site) {
-                          siteID = id;
-                          siteLatLng = '${site.siteLat!},${site.siteLng!}';
-                          // validateFields();
-                          Navigator.pop(context);
-                        },
-                      )).then((value) => print("data"));
-            }))
-        .toSet();
-  }
-
-  LatLngBounds _createBounds(List<LatLng> positions) {
-    final southwestLat =
-        positions.map((p) => p.latitude).reduce((value, element) => value < element ? value : element); // smallest
-    final southwestLon =
-        positions.map((p) => p.longitude).reduce((value, element) => value < element ? value : element);
-    final northeastLat =
-        positions.map((p) => p.latitude).reduce((value, element) => value > element ? value : element); // biggest
-    final northeastLon =
-        positions.map((p) => p.longitude).reduce((value, element) => value > element ? value : element);
-    return LatLngBounds(southwest: LatLng(southwestLat, southwestLon), northeast: LatLng(northeastLat, northeastLon));
-  }
-
-  LatLngBounds _bounds(Set<Marker> markers) {
-    return _createBounds(markers.map((m) => m.position).toList());
   }
 
   //ViewModels for API responses
@@ -145,11 +86,6 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
   List<JobType> jobList = [];
   JobType? jobValue;
 
-  //final Location location = Location();
-
-  PermissionStatus? _permissionGranted;
-  LocationData? _location;
-  String? _error;
   String id = '1';
 
   @override
@@ -247,7 +183,6 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
                     hintStyle: const TextStyle(color: Colors.grey)),
               ),
               spacer(8.0),
-
               Text(
                 "Last Name",
                 style: body2.copyWith(color: secondaryDark),
@@ -353,7 +288,6 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
                     hintStyle: const TextStyle(color: Colors.grey)),
               ),
               spacer(8.0),
-              // double.parse(productprice.toString())
               Text(
                 'lat',
                 style: body2.copyWith(color: secondaryDark),
@@ -380,7 +314,6 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
                     hintText: "Lat",
                     hintStyle: const TextStyle(color: Colors.grey)),
               ),
-
               Text(
                 "Long",
                 style: body2.copyWith(color: secondaryDark),
@@ -406,11 +339,9 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
                     hintText: "Long",
                     hintStyle: const TextStyle(color: Colors.grey)),
               ),
-
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               ),
-
               spacer(16.0),
               Text(
                 "Site Location",
@@ -494,7 +425,7 @@ class meetingsite extends State<customer_onsite> with TickerProviderStateMixin {
           message: const Text("Error occurred on the server side"), title: const Text("Ohhh.."));
       progressDialog.show();
       // make request
-      Response response = await post(Uri.parse(URLHelper.create_customer), body: body);
+      Response response = await post(Uri.parse(ApiConstants.createCustomer), body: body);
       String raw = response.body;
       printMe(raw);
       if (response.body == "success") {

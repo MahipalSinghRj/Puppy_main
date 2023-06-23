@@ -1,6 +1,8 @@
 class ApiConstants {
+  //Base url
   static String baseUrl = "https://track.smart-tech.melbourne/";
 
+  static String getPeopleById = "https://graph.microsoft.com/v1.0/";
   static String userProfile = "https://graph.microsoft.com/v1.0/me/";
   static String taskList = "https://graph.microsoft.com/v1.0/me/todo/lists";
 
@@ -10,7 +12,6 @@ class ApiConstants {
   static String breakToggle = "${baseUrl}break_toggle";
   static String endSession = "${baseUrl}endSession";
 
-  //Job service block
   static String getOrganization = "${baseUrl}init";
   static String getSites = "${baseUrl}getSite";
   static String fetchList = "${baseUrl}init";
