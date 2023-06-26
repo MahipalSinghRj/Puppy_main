@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:friday_v/Constants/api_constants.dart';
+ import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/auth/sso.dart';
 import 'package:friday_v/model/user.dart';
-import 'package:friday_v/service/config.dart';
-import 'package:friday_v/utils/status_code_constants.dart';
+ import 'package:friday_v/utils/status_code_constants.dart';
 import 'package:friday_v/utils/shared_pref.dart';
 import 'package:http/http.dart' as http;
-
 import '../Debug/printme.dart';
 
 class UserService {

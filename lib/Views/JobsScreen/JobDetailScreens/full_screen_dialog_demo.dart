@@ -6,15 +6,12 @@ import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/model/org.dart';
-import 'package:friday_v/service/config.dart';
-import 'package:friday_v/utils/colors.dart';
+ import 'package:friday_v/utils/colors.dart';
 import 'package:friday_v/utils/svg.dart';
-import 'package:friday_v/widgets/sizebox_spacer.dart';
-import 'package:html_editor_enhanced/html_editor.dart';
+ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:ndialog/ndialog.dart';
-
 import '../../../Debug/printme.dart';
 import '../../../widgets/svg_view.dart';
 import '../../../widgets/top_bar.dart';

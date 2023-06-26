@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:friday_v/Constants/api_constants.dart';
-import 'package:friday_v/service/config.dart';
-import 'package:friday_v/utils/colors.dart';
+ import 'package:friday_v/utils/colors.dart';
 import 'package:http/http.dart';
 import 'package:ndialog/ndialog.dart';
 import '../../../Debug/printme.dart';
