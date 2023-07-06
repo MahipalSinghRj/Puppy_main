@@ -18,6 +18,7 @@ class Todo extends StatefulWidget {
 }
 
 class TodoState extends State<Todo> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
   late TodoProvider jobs;
 
   Future<dynamic> _refresh() {
@@ -26,18 +27,11 @@ class TodoState extends State<Todo> {
     });
   }
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-
   @override
   void initState() {
     super.initState();
     jobs = Provider.of<TodoProvider>(context, listen: false);
     jobs.getTaskList();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

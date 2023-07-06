@@ -198,9 +198,13 @@ class NewJobState extends State<NewJob> with TickerProviderStateMixin {
       _location = locationResult;
       siteLatLng = "${_location!.latitude},${_location!.longitude}";
       printMe("Location latitude or longitude : ${_location!.latitude}  ${_location!.longitude}");
-    } on PlatformException catch (err) {
-      _error = err.code;
-      printError("Location error is : ${_error!}");
+    } catch (err) {
+      if (err is PlatformException) {
+        _error = err.code;
+        printError("Location error is : ${_error!}");
+      } else {
+        printError("An error occurred while getting the location: $err");
+      }
     }
   }
 

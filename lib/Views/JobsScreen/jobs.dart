@@ -35,44 +35,42 @@ class JobsState extends State<Jobs> {
     return Scaffold(
       body: Column(
         children: [
-          FutureBuilder<List<Session>?>(
-            future: JobService().getSessions(), // async work
-            builder: (BuildContext context, AsyncSnapshot<List<Session>?> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return const Expanded(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                default:
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    if (snapshot.data!.isEmpty) {
-                      return Expanded(
-                        child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [Text("No Jobs Available")],
-                        )),
-                      );
+          Expanded(
+            child: FutureBuilder<List<Session>?>(
+              future: JobService().getSessions(), // async work
+              builder: (BuildContext context, AsyncSnapshot<List<Session>?> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return const Center(child: CircularProgressIndicator());
+                  default:
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
                     } else {
-                      return RefreshIndicator(
-                        onRefresh: _refresh,
-                        child: ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          padding: const EdgeInsets.only(bottom: 64.0, top: 8),
-                          itemBuilder: (BuildContext context, int index) {
-                            Session dd = snapshot.data![index];
-                            return gridItemCard(dd, snapshot.data!.length, index, context);
-                          },
-                        ),
-                      );
+                      if (snapshot.data!.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [Text("No Jobs Available")],
+                          ),
+                        );
+                      } else {
+                        return RefreshIndicator(
+                          onRefresh: _refresh,
+                          child: ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemCount: snapshot.data!.length,
+                            padding: const EdgeInsets.only(bottom: 64.0, top: 8),
+                            itemBuilder: (BuildContext context, int index) {
+                              Session dd = snapshot.data![index];
+                              return gridItemCard(dd, snapshot.data!.length, index, context);
+                            },
+                          ),
+                        );
+                      }
                     }
-                  }
-              }
-            },
+                }
+              },
+            ),
           ),
         ],
       ),

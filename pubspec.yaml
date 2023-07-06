@@ -41,7 +41,7 @@ dependencies:
   location: ^4.4.0
   #  flutter_barcode_scanner: ^2.0.0
   google_maps_flutter: ^2.1.10
-  intl: ^0.17.0
+  #intl: ^0.17.0
   workmanager: ^0.5.0
   ndialog: ^4.1.1+1
   html_editor_enhanced: ^2.5.1
@@ -69,6 +69,7 @@ dependencies:
   printing: ^5.9.2
   image: ^4.0.15
   flutter_launcher_icons:
+  intl: any
 
 dev_dependencies:
   flutter_test:

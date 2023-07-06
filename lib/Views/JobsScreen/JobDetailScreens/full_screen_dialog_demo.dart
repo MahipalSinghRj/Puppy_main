@@ -6,9 +6,9 @@ import 'package:flutter_signature_pad/flutter_signature_pad.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:friday_v/Constants/api_constants.dart';
 import 'package:friday_v/model/org.dart';
- import 'package:friday_v/utils/colors.dart';
+import 'package:friday_v/utils/colors.dart';
 import 'package:friday_v/utils/svg.dart';
- import 'package:html_editor_enhanced/html_editor.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:ndialog/ndialog.dart';
@@ -116,7 +116,7 @@ class FullScreenDialogDemoState extends State<FullScreenDialogDemo> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Scroll for Signature",
+                            "Click for Signature",
                             textAlign: TextAlign.center,
                             style: body2.copyWith(color: secondaryDark, fontWeight: FontWeight.w500),
                           ),
